@@ -17,16 +17,6 @@ permissions:
   id-token: write  # ID 토큰에 쓰기 권한을 부여 (AWS 역할 사용을 위해 필요)
   contents: read   # 코드 저장소의 내용을 읽을 권한 부여
 
-# 전역 환경 변수 설정 (워크플로우 전체에서 사용할 환경 변수)
-#env:
-#  AWS_REGION: ap-northeast-2  # AWS 리전 설정
-#  ECR_REPOSITORY: cicd        # Amazon ECR 리포지토리 이름
-#
-#  ECS_SERVICE: CICD-TestService  # ECS 서비스 이름
-#  ECS_CLUSTER: CICDCluster-1118  # ECS 클러스터 이름
-#  ECS_TASK_DEFINITION: ./task-definition.json  # 태스크 정의 파일 경로
-#  CONTAINER_NAME: cicd  # 컨테이너 이름
-
 jobs:
   # Docker 이미지를 빌드하고 푸시하는 작업 정의
   build-docker-image:
