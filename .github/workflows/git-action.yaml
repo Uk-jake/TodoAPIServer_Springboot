@@ -50,9 +50,11 @@ jobs:
       # Docker 이미지 빌드 및 DockerHub로 푸시
       - name: build and release to DockerHub
         env:
-          NAME: ${{secrets.DOCKERHUB_USERNAME}}  # GitHub Secrets에서 가져온 DockerHub 사용자 이름 설정
-          REPO: todo-app  # Docker 이미지의 이름(리포지토리) 설정
+         NAME: ${{secrets.DOCKERHUB_USERNAME}}  # GitHub Secrets에서 가져온 DockerHub 사용자 이름 설정
+         REPO: todo-app  # Docker 이미지의 이름(리포지토리) 설정
         run: |
+          echo '{ "insecure-registries": ["<registry_domain_or_ip>"] }' | sudo tee /etc/docker/daemon.json
+          sudo systemctl restart docker
           docker build -t $REPO .
           docker tag $REPO:latest $NAME/$REPO:latest
           docker push $NAME/$REPO:latest
