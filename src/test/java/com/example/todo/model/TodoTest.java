@@ -1,6 +1,5 @@
 package com.example.todo.model;
 
-import com.example.todo.Todo;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
