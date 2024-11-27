@@ -40,7 +40,7 @@ jobs:
         with:
           arguments: clean bootJar  # Gradle을 사용하여 프로젝트 클린 후 bootJar 생성
 
-      # Docker 이미지 빌드 및 Private Registry로 푸시
+      # Docker 이미지 빌드 및 Private Registry 푸시
       - name: build and release to DockerHub
         env:
          NAME: ${{secrets.REGISTRY_DOMAIN}}  # GitHub Secrets에서 가져온 DockerHub 사용자 이름 설정
@@ -49,4 +49,12 @@ jobs:
           docker build -t $REPO .
           docker tag $REPO:latest $NAME/$REPO:latest
           docker push $NAME/$REPO:latest
+
+      # AWS Login
+      - name: AWS ECR Credential
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::058264293778:role/awsLogin_githubAction
+          role-session-name: sampleSessionName
+          aws-region: ap-northeast-2
       
