@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://54.180.85.91:3306/todo?useSSL=false&serverTimezone=Asia/Seoul
-    username: jake
-    password: 110499
+    url: jdbc:mysql://13.125.210.17:3306/todo?useSSL=false&serverTimezone=Asia/Seoul
+    username: swschool
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
