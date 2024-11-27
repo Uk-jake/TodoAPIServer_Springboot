@@ -50,7 +50,7 @@ jobs:
           docker tag $REPO:latest $NAME/$REPO:latest
           docker push $NAME/$REPO:latest
 
-      # AWS Login
+      # AWS Credential Login
       - name: AWS ECR Credential
         uses: aws-actions/configure-aws-credentials@v4
         with:
