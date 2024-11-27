@@ -9,34 +9,44 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/todos")
 public class TodoController {
 
     @Autowired
     private TodoService todoService;
 
-    @GetMapping
+    // 모든 Todo 가져오기
+    @GetMapping("/todos")
     public List<Todo> getAllTodos() {
         return todoService.getAllTodos();
     }
 
-    @GetMapping("/{id}")
+    // 특정 ID의 Todo 가져오기
+    @GetMapping("/todos/{id}")
     public Optional<Todo> getTodoById(@PathVariable Long id) {
         return todoService.getTodoById(id);
     }
 
-    @PostMapping
+    // Todo 생성하기
+    @PostMapping("/todos")
     public Todo createTodo(@RequestBody Todo todo) {
         return todoService.createTodo(todo);
     }
 
-    @PutMapping("/{id}")
+    // Todo 수정하기
+    @PutMapping("/todos/{id}")
     public Todo updateTodo(@PathVariable Long id, @RequestBody Todo todo) {
         return todoService.updateTodo(id, todo);
     }
 
-    @DeleteMapping("/{id}")
+    // 특정 ID의 Todo 삭제하기
+    @DeleteMapping("/todos/{id}")
     public void deleteTodoById(@PathVariable Long id) {
         todoService.deleteTodoById(id);
+    }
+
+    // Health Check 엔드포인트 추가
+    @GetMapping("/")
+    public String healthCheck() {
+        return "OK";
     }
 }
