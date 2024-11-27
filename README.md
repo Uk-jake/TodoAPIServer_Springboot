@@ -1,19 +1,26 @@
 # Todo API Server Documentation
 
-## 서비스 설명
+## 사용된 기술 스택
+- Frame Work : Spring Boot
+- Java : Java JDK 17
+- DB : MySQL (EC2)
+- DevOps : AWS EC2, ECS, Docker
 
+## 서비스 설명
 - Spring Boot를 사용하여 간단한 API 서버를 구현했습니다.
+
 - 서버의 기능은 Todo 리스트를 조회, 등록, 수정, 삭제하는 기능을 제공합니다.
+
 - 예외 처리는 포함되어 있지 않습니다.
 
 ## **ERD (Entity Relationship Diagram)**
 
-| **Entity** | **Attribute**  | **Type** | **Description**                |
-|------------|----------------|----------|--------------------------------|
-| Todo       | id             | Long     | 기본 키 (자동 생성)            |
-|            | title          | String   | 할 일 제목                     |
-|            | description    | String   | 할 일에 대한 설명              |
-|            | completed      | boolean  | 할 일의 완료 여부 (`true`/`false`) |
+| **Entity** | **Attribute** | **Type** | **Description**             |
+| ---------- | ------------- | -------- | --------------------------- |
+| Todo       | id            | Long     | 기본 키 (자동 생성)                |
+|            | title         | String   | 할 일 제목                      |
+|            | description   | String   | 할 일에 대한 설명                  |
+|            | completed     | boolean  | 할 일의 완료 여부 (`true`/`false`) |
 
 ## **API 명세서 (API Specification)**
 
