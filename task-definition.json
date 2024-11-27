@@ -2,7 +2,7 @@
   "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:058264293778:task-definition/nginxtask:2",
   "containerDefinitions": [
     {
-      "name": "nginx",
+      "name": "todo",
       "cpu": 0,
       "portMappings": [
         {
