@@ -44,8 +44,9 @@ jobs:
       - name: build and release to DockerHub
         env:
          NAME: ${{secrets.REGISTRY_DOMAIN}}  # GitHub Secrets에서 가져온 DockerHub 사용자 이름 설정
-         REPO: todo-app  # Docker 이미지의 이름(리포지토리) 설정
+         REPO: todo  # Docker 이미지의 이름(리포지토리) 설정
         run: |
           docker build -t $REPO .
           docker tag $REPO:latest $NAME/$REPO:latest
           docker push $NAME/$REPO:latest
+      
