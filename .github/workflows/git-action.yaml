@@ -16,7 +16,7 @@ permissions:
 # 전역 환경 변수 설정
 env:
   AWS_REGION: ap-northeast-2
-  ECS_SERVICE: todo-app-service-01
+  ECS_SERVICE: todo-app-service-03
   ECS_CLUSTER: todo-app-cluster-01
   ECS_TASK_DEFINITION: ./task-definition.json
   CONTAINER_NAME: todo
