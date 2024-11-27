@@ -1,4 +1,5 @@
 {
+  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:058264293778:task-definition/nginx-task:2",
   "containerDefinitions": [
     {
       "name": "todo",
@@ -36,8 +37,37 @@
   "family": "nginx-task",
   "executionRoleArn": "arn:aws:iam::058264293778:role/ecsTaskExecutionRole",
   "networkMode": "awsvpc",
+  "revision": 2,
   "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.28"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+    }
+  ],
   "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "FARGATE"
+  ],
   "requiresCompatibilities": [
     "FARGATE"
   ],
@@ -46,5 +76,8 @@
   "runtimePlatform": {
     "cpuArchitecture": "X86_64",
     "operatingSystemFamily": "LINUX"
-  }
+  },
+  "registeredAt": "2024-11-18T02:49:53.437Z",
+  "registeredBy": "arn:aws:iam::058264293778:root",
+  "tags": []
 }
