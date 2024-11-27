@@ -40,16 +40,12 @@ jobs:
         with:
           arguments: clean bootJar  # Gradle을 사용하여 프로젝트 클린 후 bootJar 생성
 
-      # Docker 이미지 빌드 및 Private Registry(EC2)로 푸시
+      # Docker 이미지 빌드 및 Private Registry로 푸시
       - name: build and release to DockerHub
         env:
-         NAME: ${{secrets.DOCKERHUB_USERNAME}}  # GitHub Secrets에서 가져온 DockerHub 사용자 이름 설정
+         NAME: ${{secrets.REGISTRY_DOMAIN}}  # GitHub Secrets에서 가져온 DockerHub 사용자 이름 설정
          REPO: todo-app  # Docker 이미지의 이름(리포지토리) 설정
-        # docker push 명령어는 보안상의 이슈로 HTTPS를 사용
-        # 현재 private registry http 요청만 받을 수 있기 때문에 insecure-registries 설정으로 보안 설정을 해제해야함.
         run: |
-          echo '{ "insecure-registries": ["13.209.68.92:5000"] }' | sudo tee /etc/docker/daemon.json
-          sudo systemctl restart docker
           docker build -t $REPO .
           docker tag $REPO:latest $NAME/$REPO:latest
           docker push $NAME/$REPO:latest
