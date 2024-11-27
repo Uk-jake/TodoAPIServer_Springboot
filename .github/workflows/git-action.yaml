@@ -52,12 +52,16 @@ jobs:
       # Docker 이미지 빌드 및 Private Registry 푸시
       - name: build and release to Private Registry
         env:
-         NAME: ${{secrets.REGISTRY_DOMAIN}}  # GitHub Secrets에서 가져온 DockerHub 사용자 이름 설정
-         REPO: todo  # Docker 이미지의 이름(리포지토리) 설정
+          NAME: ${{ secrets.REGISTRY_DOMAIN }}
+          REPO: todo
         run: |
           docker build -t $REPO .
           docker tag $REPO:latest $NAME/$REPO:latest
           docker push $NAME/$REPO:latest
+        # 이미지 URI를 출력 변수로 설정
+        id: docker_build
+        outputs:
+          image: ${{ env.NAME }}/${{ env.REPO }}:latest
 
       # AWS Credential Login
       - name: AWS ECR Credential
@@ -70,17 +74,17 @@ jobs:
       # 새로운 이미지 ID를 사용해 Amazon ECS 태스크 정의를 업데이트
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc  # 태스크 정의를 업데이트하는 ECS 액션 사용
+        uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
         with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}  # 업데이트할 태스크 정의 파일
-          container-name: ${{ env.CONTAINER_NAME }}  # 업데이트할 컨테이너 이름
-          image: ${{ steps.build-image.outputs.image }}  # 새로 빌드된 이미지의 ID
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.docker_build.outputs.image }}  # 새로 빌드된 이미지의 ID 사용
 
       # Amazon ECS 서비스 배포
       - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a  # ECS 서비스에 태스크 정의를 배포하는 액션 사용
+        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
         with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}  # 업데이트된 태스크 정의
-          service: ${{ env.ECS_SERVICE }}  # ECS 서비스 이름
-          cluster: ${{ env.ECS_CLUSTER }}  # ECS 클러스터 이름
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
