@@ -17,6 +17,14 @@ permissions:
   id-token: write  # ID 토큰에 쓰기 권한을 부여 (AWS 역할 사용을 위해 필요)
   contents: read   # 코드 저장소의 내용을 읽을 권한 부여
 
+# 전역 환경 변수 설정 (워크플로우 전체에서 사용할 환경 변수)
+env:
+  AWS_REGION: ap-northeast-2  # AWS 리전 설정
+
+  ECS_SERVICE: todo-app-service-01  # ECS 서비스 이름
+  ECS_CLUSTER: todo-app-cluster-01  # ECS 클러스터 이름
+  ECS_TASK_DEFINITION: ./task-definition.json  # 태스크 정의 파일 경로
+
 jobs:
   # Docker 이미지를 빌드하고 푸시하는 작업 정의
   build-docker-image:
@@ -57,4 +65,21 @@ jobs:
           role-to-assume: arn:aws:iam::058264293778:role/awsLogin_githubAction
           role-session-name: sampleSessionName
           aws-region: ap-northeast-2
-      
+
+      # 새로운 이미지 ID를 사용해 Amazon ECS 태스크 정의를 업데이트
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}  # 업데이트할 태스크 정의 파일
+          container-name: todo  # 업데이트할 컨테이너 이름 (빌드한 이미지가 포함된 컨테이너 이름과 일치해야 함)
+          image: ${{ secrets.REGISTRY_DOMAIN }}/todo:latest  # 새로 빌드된 이미지의 ID. Private Registry의 도메인명과 이미지를 사용함.
+
+      # Amazon ECS 서비스 배포
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}  # 업데이트된 태스크 정의
+          service: ${{ env.ECS_SERVICE }}  # ECS 서비스 이름
+          cluster: ${{ env.ECS_CLUSTER }}  # ECS 클러스터 이름
+          wait-for-service-stability: true  # 서비스가 안정될 때까지 대기
